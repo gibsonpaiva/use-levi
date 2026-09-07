@@ -1,0 +1,24 @@
+{
+  "name": "use-levi",
+  "version": "1.0.0",
+  "description": "USE LEVI - Automações Inteligentes e Softwares Sob Medida",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
+  },
+  "keywords": [
+    "automacao",
+    "ia",
+    "software",
+    "dashboard",
+    "n8n",
+    "landing-page"
+  ],
+  "author": "USE LEVI",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}
