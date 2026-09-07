@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const encoded = encodeURIComponent(message);
       // Link direto WhatsApp
-      window.open(`https://wa.me/5548996118796?text=${encoded}`, '_blank');
+      window.open(`https://wa.me/5531983344521?text=${encoded}`, '_blank');
       closeModal();
       diagnosticForm.reset();
     });
