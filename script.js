@@ -86,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const subTools = document.getElementById('subTools');
   const wire1 = document.getElementById('wire1');
   const wire2 = document.getElementById('wire2');
+  const mobileWire1 = document.getElementById('mobileWire1');
+  const mobileWire2 = document.getElementById('mobileWire2');
   const packet1 = document.getElementById('packet1');
   const packet2 = document.getElementById('packet2');
 
@@ -102,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (wire1) wire1.classList.remove('active');
     if (wire2) wire2.classList.remove('active');
+    if (mobileWire1) mobileWire1.classList.remove('active');
+    if (mobileWire2) mobileWire2.classList.remove('active');
     if (packet1) packet1.classList.remove('flowing');
     if (packet2) packet2.classList.remove('flowing');
   }
@@ -126,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setLog("Passo 1/3: Gatilho acionado (Novo lead / WhatsApp recebido)");
     if (nodeTrigger) nodeTrigger.classList.add('active-step');
     if (wire1) wire1.classList.add('active');
+    if (mobileWire1) mobileWire1.classList.add('active');
     if (packet1) packet1.classList.add('flowing');
 
     await new Promise(r => setTimeout(r, 900));
@@ -144,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Step 3: Ação de Saída / Atualização
     setLog("Passo 3/3: Executando ação -> Painel atualizado & WhatsApp disparado!");
     if (wire2) wire2.classList.add('active');
+    if (mobileWire2) mobileWire2.classList.add('active');
     if (packet2) packet2.classList.add('flowing');
     if (nodeAction) nodeAction.classList.add('active-step');
 

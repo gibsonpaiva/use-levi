@@ -218,6 +218,12 @@
                 <div class="node-port port-right"></div>
               </div>
 
+              <!-- Conector Vertical Mobile 1 (Gatilho -> IA) -->
+              <div class="mobile-flow-connector" id="mobileWire1">
+                <div class="mobile-connector-line"></div>
+                <div class="mobile-connector-arrow"></div>
+              </div>
+
               <!-- NÓ 2: AGENTE DE INTELIGÊNCIA ARTIFICIAL -->
               <div class="n8n-node node-agent" id="nodeAgent">
                 <div class="node-card-inner">
@@ -248,40 +254,48 @@
               </div>
 
               <!-- SUB-NÓS CONECTADOS AO AGENTE DE IA -->
-              <!-- Sub 1: Modelo IA -->
-              <div class="sub-node sub-model" id="subModel">
-                <div class="sub-node-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M12 3v18"></path>
-                    <path d="M3 12h18"></path>
-                  </svg>
+              <div class="sub-nodes-container">
+                <!-- Sub 1: Modelo IA -->
+                <div class="sub-node sub-model" id="subModel">
+                  <div class="sub-node-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <path d="M12 3v18"></path>
+                      <path d="M3 12h18"></path>
+                    </svg>
+                  </div>
+                  <div class="sub-node-name">Motor LLM</div>
+                  <div class="sub-node-desc">IA Generativa</div>
                 </div>
-                <div class="sub-node-name">Motor LLM</div>
-                <div class="sub-node-desc">IA Generativa</div>
+
+                <!-- Sub 2: Memória -->
+                <div class="sub-node sub-memory" id="subMemory">
+                  <div class="sub-node-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </div>
+                  <div class="sub-node-name">Memória Ativa</div>
+                  <div class="sub-node-desc">Histórico do Cliente</div>
+                </div>
+
+                <!-- Sub 3: Ferramentas / Documentos -->
+                <div class="sub-node sub-tools" id="subTools">
+                  <div class="sub-node-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <div class="sub-node-name">Fontes & APIs</div>
+                  <div class="sub-node-desc">Planilhas & CRM</div>
+                </div>
               </div>
 
-              <!-- Sub 2: Memória -->
-              <div class="sub-node sub-memory" id="subMemory">
-                <div class="sub-node-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </div>
-                <div class="sub-node-name">Memória Ativa</div>
-                <div class="sub-node-desc">Histórico do Cliente</div>
-              </div>
-
-              <!-- Sub 3: Ferramentas / Documentos -->
-              <div class="sub-node sub-tools" id="subTools">
-                <div class="sub-node-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                  </svg>
-                </div>
-                <div class="sub-node-name">Fontes & APIs</div>
-                <div class="sub-node-desc">Planilhas & CRM</div>
+              <!-- Conector Vertical Mobile 2 (IA -> Saída) -->
+              <div class="mobile-flow-connector" id="mobileWire2">
+                <div class="mobile-connector-line"></div>
+                <div class="mobile-connector-arrow"></div>
               </div>
 
               <!-- NÓ 3: AÇÃO DE SAÍDA -->

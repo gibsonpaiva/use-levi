@@ -787,6 +787,14 @@ body {
 }
 
 /* Sub-nodes below Agent */
+.sub-nodes-container {
+  display: contents;
+}
+
+.mobile-flow-connector {
+  display: none;
+}
+
 .sub-node {
   position: absolute;
   width: 135px;
@@ -820,50 +828,184 @@ body {
   left: calc(50% + 40px);
 }
 
-/* Redimensionamento responsivo perfeito em telas menores sem barra de rolagem */
-@media (max-width: 1180px) {
+/* Responsividade fluida entre Desktop e Tablets */
+@media (min-width: 993px) and (max-width: 1180px) {
   .n8n-flow-container {
     transform: scale(0.9);
     transform-origin: center center;
   }
 }
 
-@media (max-width: 992px) {
+@media (min-width: 769px) and (max-width: 992px) {
   .n8n-flow-container {
     transform: scale(0.78);
     transform-origin: center center;
   }
 }
 
+/* Layout Mobile Perfeito: Sequência Vertical Fluida sem Compressão (<= 768px) */
 @media (max-width: 768px) {
-  .n8n-flow-container {
-    transform: scale(0.66);
-    transform-origin: center center;
+  .n8n-header {
+    padding: 12px 16px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .n8n-canvas {
-    min-height: 380px;
-    padding: 20px 0;
-  }
-}
 
-@media (max-width: 540px) {
-  .n8n-flow-container {
-    transform: scale(0.5);
-    transform-origin: center center;
+  .n8n-title-bar {
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
   }
-  .n8n-canvas {
-    min-height: 320px;
-    padding: 10px 0;
-  }
-}
 
-@media (max-width: 400px) {
-  .n8n-flow-container {
-    transform: scale(0.42);
-    transform-origin: center center;
+  .n8n-flow-name {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
+  .n8n-flow-tag {
+    display: none;
+  }
+
+  .btn-simulate {
+    padding: 6px 14px;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
   .n8n-canvas {
-    min-height: 280px;
+    min-height: auto;
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .n8n-flow-container {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: none !important;
+    position: relative;
+  }
+
+  .n8n-svg-connections {
+    display: none;
+  }
+
+  /* Cards verticais no mobile */
+  .n8n-node {
+    position: static;
+    width: 100%;
+    max-width: 320px;
+    transform: none !important;
+    margin: 0;
+  }
+
+  .node-trigger,
+  .node-agent,
+  .node-action {
+    position: static;
+    width: 100%;
+    max-width: 320px;
+    top: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .node-port {
+    display: none;
+  }
+
+  /* Conectores Verticais Animados */
+  .mobile-flow-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    position: relative;
+  }
+
+  .mobile-connector-line {
+    width: 2px;
+    height: 22px;
+    background: #484848;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-connector-arrow {
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid #555;
+    border-bottom: 2px solid #555;
+    transform: rotate(45deg);
+    margin-top: -3px;
+    transition: border-color 0.3s ease;
+  }
+
+  .mobile-flow-connector.active .mobile-connector-line {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .mobile-flow-connector.active .mobile-connector-arrow {
+    border-color: var(--accent);
+  }
+
+  /* Linha dos 3 Sub-nós */
+  .sub-nodes-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 8px;
+  }
+
+  .sub-node {
+    position: static;
+    width: 100%;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    top: auto;
+    left: auto;
+  }
+
+  .sub-node-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+  }
+
+  .sub-node-name {
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .sub-node-desc {
+    display: none;
+  }
+
+  /* Console */
+  .n8n-console {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 16px;
+    font-size: 11px;
   }
 }
 
