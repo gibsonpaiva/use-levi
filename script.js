@@ -3,6 +3,8 @@
  * Author: USE LEVI
  */
 
+import Lenis from 'lenis';
+
 document.addEventListener('DOMContentLoaded', () => {
   // 0. Smooth Scroll Engine (Lenis)
   let lenis = null;
