@@ -257,6 +257,13 @@ body {
   opacity: 0.85;
 }
 
+.brand-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .brand-name {
   font-weight: 700;
   font-size: 14px;
