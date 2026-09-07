@@ -4,15 +4,58 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Smooth Scroll Engine (Lenis)
+  let lenis = null;
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.2,
+      infinite: false,
+    });
+
+    window.lenis = lenis;
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Suaviza navegação de âncoras compensando altura do header
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href && href !== '#' && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            lenis.scrollTo(target, { offset: -65, duration: 1.15 });
+          }
+        }
+      });
+    });
+  }
+
   // 1. Header scroll effect
   const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header.classList.add('scrolled');
+  const updateHeaderState = (scrollY) => {
+    if (scrollY > 40) {
+      header?.classList.add('scrolled');
     } else {
-      header.classList.remove('scrolled');
+      header?.classList.remove('scrolled');
     }
-  });
+  };
+
+  if (lenis) {
+    lenis.on('scroll', ({ scroll }) => updateHeaderState(scroll));
+  } else {
+    window.addEventListener('scroll', () => updateHeaderState(window.scrollY));
+  }
 
   // 2. Mobile menu toggle
   const mobileToggle = document.getElementById('mobileToggle');
@@ -144,27 +187,173 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 3.1. Spreadsheet to Dashboard Simulation
+  const btnSimulateSheetSync = document.getElementById('btnSimulateSheetSync');
+  const sheetConsoleLog = document.getElementById('sheetConsoleLog');
+  const sheetNewRow = document.getElementById('sheetNewRow');
+  const sheetNewRowBadge = document.getElementById('sheetNewRowBadge');
+  const kpiRevenueVal = document.getElementById('kpiRevenueVal');
+  const kpiSalesVal = document.getElementById('kpiSalesVal');
+  const kpiTicketVal = document.getElementById('kpiTicketVal');
+  const chartBarToday = document.getElementById('chartBarToday');
+  const chartLiveTag = document.getElementById('chartLiveTag');
+
+  let isSheetSyncing = false;
+  let isSynced = false;
+
+  if (btnSimulateSheetSync) {
+    btnSimulateSheetSync.addEventListener('click', async () => {
+      if (isSheetSyncing) return;
+      isSheetSyncing = true;
+
+      if (!isSynced) {
+        btnSimulateSheetSync.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="animate-spin" style="width:13px;height:13px;">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.3"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+          </svg>
+          SINCRONIZANDO...
+        `;
+
+        if (sheetConsoleLog) {
+          sheetConsoleLog.innerHTML = `<span style="color: var(--accent);">⚡ Detectado novo registro na planilha: Linha #8422 (Grupo Alpha — R$ 15.600)...</span>`;
+        }
+
+        if (sheetNewRow) {
+          sheetNewRow.classList.add('active-sync');
+        }
+        if (sheetNewRowBadge) {
+          sheetNewRowBadge.className = 'badge-syncing';
+          sheetNewRowBadge.textContent = 'Enviando...';
+        }
+
+        await new Promise(r => setTimeout(r, 700));
+
+        if (sheetConsoleLog) {
+          sheetConsoleLog.innerHTML = `<span style="color: var(--accent);">⚡ Disparo de Webhook executado em 35ms -> Recalculando métricas e gráficos do Dashboard...</span>`;
+        }
+
+        await new Promise(r => setTimeout(r, 600));
+
+        // Update Dashboard values
+        if (kpiRevenueVal) {
+          kpiRevenueVal.textContent = 'R$ 164.520';
+          kpiRevenueVal.classList.add('highlight-number');
+        }
+        if (kpiSalesVal) {
+          kpiSalesVal.textContent = '49';
+          kpiSalesVal.classList.add('highlight-number');
+        }
+        if (kpiTicketVal) {
+          kpiTicketVal.textContent = 'R$ 3.357';
+          kpiTicketVal.classList.add('highlight-number');
+        }
+        if (chartBarToday) {
+          chartBarToday.style.height = '96%';
+        }
+        if (chartLiveTag) {
+          chartLiveTag.textContent = 'Recalculado Agora';
+          chartLiveTag.style.background = 'rgba(45, 212, 191, 0.25)';
+        }
+        if (sheetNewRowBadge) {
+          sheetNewRowBadge.className = 'badge-synced';
+          sheetNewRowBadge.textContent = 'Gravado no Painel';
+        }
+
+        if (sheetConsoleLog) {
+          sheetConsoleLog.innerHTML = `<span style="color: #4ade80;">✓ Sucesso! Linha #8422 incorporada ao Dashboard. Receita atualizada para R$ 164.520 sem intervenção humana.</span>`;
+        }
+
+        btnSimulateSheetSync.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          DADOS SINCRONIZADOS
+        `;
+
+        isSynced = true;
+      } else {
+        // Reset to initial
+        if (sheetNewRow) sheetNewRow.classList.remove('active-sync');
+        if (sheetNewRowBadge) {
+          sheetNewRowBadge.className = 'badge-syncing';
+          sheetNewRowBadge.textContent = 'Aguardando';
+        }
+        if (kpiRevenueVal) {
+          kpiRevenueVal.textContent = 'R$ 148.920';
+          kpiRevenueVal.classList.remove('highlight-number');
+        }
+        if (kpiSalesVal) {
+          kpiSalesVal.textContent = '48';
+          kpiSalesVal.classList.remove('highlight-number');
+        }
+        if (kpiTicketVal) {
+          kpiTicketVal.textContent = 'R$ 3.102';
+          kpiTicketVal.classList.remove('highlight-number');
+        }
+        if (chartBarToday) {
+          chartBarToday.style.height = '78%';
+        }
+        if (chartLiveTag) {
+          chartLiveTag.textContent = 'Atualizado';
+          chartLiveTag.style.background = 'rgba(45, 212, 191, 0.1)';
+        }
+        if (sheetConsoleLog) {
+          sheetConsoleLog.innerHTML = `<span class="console-terminal-text">Conexão ativa com o banco.</span> Clique em "SIMULAR NOVO DADO" para ver uma nova linha da planilha alimentar o painel web instantaneamente.`;
+        }
+
+        btnSimulateSheetSync.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          SIMULAR NOVO DADO
+        `;
+        isSynced = false;
+      }
+
+      isSheetSyncing = false;
+    });
+  }
+
   // 4. Modal de Diagnóstico Gratuito
   const modal = document.getElementById('diagnosticModal');
   const openModalButtons = document.querySelectorAll('[data-open-modal="diagnostic"]');
   const closeModalBtn = document.getElementById('closeModalBtn');
   const diagnosticForm = document.getElementById('diagnosticForm');
 
+  const openModal = () => {
+    if (modal) {
+      modal.classList.add('open');
+      if (window.lenis) window.lenis.stop();
+    }
+  };
+
+  const closeModal = () => {
+    if (modal) {
+      modal.classList.remove('open');
+      if (window.lenis) window.lenis.start();
+    }
+  };
+
   openModalButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (modal) modal.classList.add('open');
+      openModal();
     });
   });
 
   if (closeModalBtn && modal) {
-    closeModalBtn.addEventListener('click', () => {
-      modal.classList.remove('open');
-    });
+    closeModalBtn.addEventListener('click', closeModal);
 
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
-        modal.classList.remove('open');
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
       }
     });
   }
@@ -186,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const encoded = encodeURIComponent(message);
       // Link direto WhatsApp
       window.open(`https://wa.me/5548996118796?text=${encoded}`, '_blank');
-      modal.classList.remove('open');
+      closeModal();
       diagnosticForm.reset();
     });
   }
